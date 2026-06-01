@@ -1,18 +1,20 @@
-import { Fragment } from 'react';
+import { Fragment, useContext, memo } from 'react';
 import Task from './Task';
+//context
+import { TasksContext } from './utils/contextUtils';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
-function TasksList (props) {
-    const { tasks, deleteTask, toggleTaskCompletion, editTask } = props
+function TasksList () {
+    const tasks  = useContext(TasksContext)
     if (tasks.length)
         return (
         <Paper>
             <List>
                 {tasks.map((task, i) => (
                     <Fragment key={task.id}>
-                        <Task {...task} deleteTask={deleteTask} toggleTaskCompletion={toggleTaskCompletion} editTask={editTask}/>
+                        <Task {...task} />
                         {i < tasks.length -1 && <Divider/>}
                     </Fragment>
                 ))}
@@ -23,4 +25,4 @@ function TasksList (props) {
     return null;
 }
 
-export default TasksList;
+export default memo(TasksList);

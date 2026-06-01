@@ -1,5 +1,5 @@
 //react imports
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 //component imports
 import EditTasksForm from './EditTasksForm';
 //hooks
@@ -12,18 +12,21 @@ import CheckBox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+//context
+import { DispatchContext } from './utils/contextUtils';
 
 function Task (props) {
-    const { task, id, completed, deleteTask, toggleTaskCompletion, editTask } = props;
+    const dispatch  = useContext(DispatchContext)
+    const { task, id, completed } = props;
     const [isEditActive, toggle] = useToggle(false);
     // content render when we are not actively editing a task
     const editInactive = <Fragment>
-                            <CheckBox tabIndex={-1} checked={completed} onClick={() => toggleTaskCompletion(id)}/>
+                            <CheckBox tabIndex={-1} checked={completed} onClick={() => dispatch({type: "TOGGLE", id: id})}/>
                             <ListItemText sx={{textDecoration: completed ? 'line-through' : 'none'}}>
                                 {task}
                             </ListItemText>
                             <ListItemSecondaryAction>
-                                <IconButton aria-label='delete' onClick={() => deleteTask(id)}>
+                                <IconButton aria-label='delete' onClick={() => dispatch({type: "REMOVE", id: id})}>
                                     <DeleteIcon/>
                                 </IconButton>
                                 <IconButton aria-label='edit' onClick={toggle}>
@@ -33,7 +36,7 @@ function Task (props) {
                         </Fragment>
     return (
         <ListItem sx={{height: '64px'}}>
-            {isEditActive ? <EditTasksForm id={id} task={task} editTask={editTask} toggleEditForm={toggle}/> : editInactive}
+            {isEditActive ? <EditTasksForm id={id} task={task} toggleEditForm={toggle}/> : editInactive}
         </ListItem>
     )
 }

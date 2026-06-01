@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 //hooks
 import useInputState from './hooks/useInputState'
 //MUI imports
@@ -7,14 +8,16 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { DispatchContext } from './utils/contextUtils';
 
 function EditTasksForm(props) {
-    const { task, id, editTask, toggleEditForm } = props;
+    const dispatch = useContext(DispatchContext);
+    const { task, id, toggleEditForm } = props;
     const [value, handleChange, reset] = useInputState(task);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        editTask(id, value);
+        dispatch({type: "EDIT", id: id, newTask: value});
         reset();
         toggleEditForm();
     }

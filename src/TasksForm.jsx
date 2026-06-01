@@ -1,15 +1,17 @@
+import { useContext } from 'react';
 import useInputState from './hooks/useInputState';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import { DispatchContext } from './utils/contextUtils';
 
-function TasksForm (props) {
-    const { addTask } = props;
+function TasksForm () {
+    const dispatch  = useContext(DispatchContext);
     const [value, handleChange, reset] = useInputState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addTask(value);
+        dispatch({type: "ADD", task: value});
         reset();
     }
     return (

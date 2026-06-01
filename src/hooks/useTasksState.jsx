@@ -1,7 +1,7 @@
 import useLocalStorageState from "./useLocalStorageState";
 import { v4 as uuidv4 } from "uuid";
 
-export default function useTasksStage (initialTasks) {
+export default function useTasksState (initialTasks) {
     const [tasks, setTasks] = useLocalStorageState('tasks', initialTasks);
 
     const addTask = (newTask) => {
